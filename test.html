@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live TCS Prediction</title>
+</head>
+<body>
+    <h2>Live Stock Prediction (1 min)</h2>
+    <div id="output">Waiting for data...</div>
+
+    <script>
+        console.log("Connecting to WebSocket...");
+
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+
+        socket.onopen = function() {
+            console.log("WebSocket connected!");
+        };
+
+        socket.onerror = function(error) {
+            console.log("WebSocket error:", error);
+        };
+
+        socket.onmessage = function(event) {
+            console.log("Message received:", event.data);
+
+            const data = JSON.parse(event.data);
+
+            document.getElementById("output").innerHTML =
+                "Actual: " + data.actual + "<br>Predicted: " + data.predicted;
+        };
+    </script>
+</body>
+</html>
